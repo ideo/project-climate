@@ -1,11 +1,25 @@
-const express = require('express');
-const path = require('path');
+const express = require("express");
 const app = express();
-const PORT = 3000;
+const path = require("path");
+const port = 8000;
 
-app.use('/', express.static(path.join(__dirname, 'unity')));
+app.use(
+    express.static(path.join(__dirname, "/public"), {
+        setHeaders: function (res, path) {
+            if (path.endsWith(".gz")) {
+                res.set("Content-Encoding", "gzip");
+            }
+            if (path.includes("wasm")) {
+                res.set("Content-Type", "application/wasm");
+            }
+        },
+    })
+);
 
+app.get("/", function (req, res) {
+    res.sendFile(path.join(__dirname, "/index.html"));
+});
 
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+app.listen(port, () => {
+    console.log(`Example app listening on port ${port}`);
 });
