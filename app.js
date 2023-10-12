@@ -1,10 +1,10 @@
 const express = require('express');
+const path = require('path');
 const app = express();
 const PORT = 3000;
 
-app.get('/', (req, res) => {
-    res.send('Hi Climate');
-});
+app.use('/', express.static(path.join(__dirname, 'unity')));
+
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
